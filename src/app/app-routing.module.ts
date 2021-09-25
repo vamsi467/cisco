@@ -10,7 +10,7 @@ const routes: Routes = [
     loadChildren: './features/rooms/rooms.module#RoomsModule'
   },
   {
-    path: '/',
+    path: '',
     component:LoginComponent
   }
 ];
