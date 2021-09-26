@@ -11,7 +11,7 @@ import { RoomsState } from "./store/reducers";
 @Component({
   selector: "app-rooms",
   templateUrl: "./rooms.component.html",
-  styleUrls: ["./rooms.component.css"],
+  styleUrls: ["./rooms.component.scss"],
 })
 export class RoomsComponent implements OnInit {
   roomName:FormControl=new FormControl('', [Validators.required]);
@@ -32,12 +32,14 @@ export class RoomsComponent implements OnInit {
         this.getRooms(res.access_token)
       });
   }
-  async getRooms(access_token) {
+   getRooms(access_token) {
     sessionStorage.setItem("accessToken", access_token);
     this.store.dispatch(new ListRooms());
   }
-  addRoom(){
-    this.store.dispatch(new CreateRoom({title:this.roomName.value}));
+  async addRoom(){
+    await this.store.dispatch(new CreateRoom({title:this.roomName.value}));
+    
+    this.roomName.reset()
   }
   deleteRoom(id){
     this.store.dispatch(new DeleteRoom({id}));

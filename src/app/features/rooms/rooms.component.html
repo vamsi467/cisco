@@ -1,17 +1,19 @@
-<section>
-  <p>
+<section class="rooms">
+  <p class="rooms__header">
     Wex API, Create a room
   </p>
-  <div>
+  <div class="rooms__creation">
     <input type="text" [formControl]="roomName"><br>
-    <button [disabled]="!roomName.valid" (click)="addRoom()"> Create room</button>
+    <button [disabled]="!roomName.valid" class="btn" (click)="addRoom()"> Create room</button>
   </div>
-
-  <ul>
-    <li *ngFor="let rooms of (rooms$ | async)">
-      {{ rooms.title }}
-      <button (click)="deleteRoom(rooms.id)">delete</button>
-    </li>
-  </ul>
-
+  <div class="rooms__list" *ngIf="rooms$ | async as rooms; else loading">
+    <ng-container *ngIf="rooms.length; else noItems">
+      <li *ngFor="let room of rooms">
+        {{ room.title }}
+        <button class="btn" (click)="deleteRoom(room.id)">delete</button>
+      </li>
+    </ng-container>
+    <ng-template #noItems>No Rooms! </ng-template>
+  </div>
+  <ng-template #loading>loading...</ng-template>
 </section>
