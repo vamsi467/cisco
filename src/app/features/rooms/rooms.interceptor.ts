@@ -9,10 +9,11 @@ import {
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { RoomsHttpService } from "./rooms.http.service";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class RoomsInterceptor implements HttpInterceptor {
-  constructor(private _authService: RoomsHttpService) {}
+  constructor(private _router: Router) {}
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
@@ -29,9 +30,11 @@ export class RoomsInterceptor implements HttpInterceptor {
 
     return next.handle(newReq).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          console.log(error);
-        }
+        if ( error instanceof HttpErrorResponse && error.status === 401 )
+                {
+                  sessionStorage.clear()
+                  this._router.navigateByUrl('/')
+                }
 
         return throwError(error);
       })
